@@ -10,7 +10,7 @@ const BASE_URL = 'https://pokeapi.co/api/v2/pokemon';
 
 abstract class PokemonRemoteDataSource {
 
-  Future<PokemonModel> getPokemon(int number);
+  Future<PokemonModel> getPokemon(String number);
 
 }
 
@@ -21,7 +21,7 @@ class PokemonRemoteDataSourceImpl implements PokemonRemoteDataSource {
   PokemonRemoteDataSourceImpl({@required this.client});
 
   @override
-  Future<PokemonModel> getPokemon(int number) =>
+  Future<PokemonModel> getPokemon(String number) =>
       _getPokemonFromUrl(BASE_URL + '/$number');
 
 

@@ -4,6 +4,6 @@ import 'package:dartz/dartz.dart';
 
 abstract class PokemonRepository {
 
-  Future<Either<Failure, Pokemon>> getPokemon(int number);
+  Future<Either<Failure, Pokemon>> getPokemon(String number);
 
 }
