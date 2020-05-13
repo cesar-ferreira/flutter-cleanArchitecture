@@ -24,21 +24,6 @@ class _PokemonPageState extends State<PokemonPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-//        child: Observer(builder: (_) {
-//          switch (pokemonController.pokemonState) {
-//            case EnumState.loading:
-//              return LoadingWidget();
-//            case EnumState.loaded:
-//              return Text(pokemonController.pokemon.name);
-//            case EnumState.error:
-//              return Text('Error');
-//            default:
-//              return Text('Default');
-//          }
-//        }),
-
-
-//
         child: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
