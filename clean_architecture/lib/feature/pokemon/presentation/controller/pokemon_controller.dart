@@ -1,50 +1,43 @@
 import 'package:cleanarchitecture/core/dependence_injection/injection_container.dart' as dependence_injection;
+import 'package:cleanarchitecture/core/error/failure.dart';
+import 'package:cleanarchitecture/core/state/controller_state.dart';
+import 'package:cleanarchitecture/core/state/enum_state.dart';
+import 'package:cleanarchitecture/feature/pokemon/domain/entities/pokemon.dart';
 import 'package:cleanarchitecture/feature/pokemon/domain/use_cases/get_pokemon.dart';
+import 'package:dartz/dartz.dart';
 import 'package:mobx/mobx.dart';
 
+part 'pokemon_controller.g.dart';
 
-class PokemonController {
+class PokemonController = _PokemonController with _$PokemonController;
 
-  var getPokemonUseCase = dependence_injection.serviceLocator<GetPokemon>();
+abstract class _PokemonController with Store {
 
-  PokemonController() {
-    getPokemon = Action(_getPokemon);
-    setId = Action(_setId);
-    setName = Action(_setName);
-    setImage = Action(_setImage);
+  var _getPokemonUseCase = dependence_injection.serviceLocator<GetPokemon>();
 
-//    isValid = Computed(bool _isValid);
+  @observable
+  String number;
+
+  @action
+  changeNumber(String numberValue) => number = numberValue;
+
+  @observable
+  ObservableFuture<Either<Failure, Pokemon>> _pokemonFuture;
+
+  @observable
+  Pokemon pokemon;
+
+  @computed
+  EnumState get pokemonState => ControllerState.statusCheck(_pokemonFuture);
+
+  @action
+  Future<void> getPokemon() async {
+
+    _pokemonFuture = ObservableFuture(_getPokemonUseCase(number: number));
+    final result = await _pokemonFuture;
+
+    if(result.isRight()) {
+      pokemon = result.getOrElse(null);
+    }
   }
-
-  Observable _id = Observable("");
-  Observable _name = Observable("");
-  Observable _image = Observable("");
-
-  String get id => _id.value;
-  String get name => _name.value;
-  String get image => _image.value;
-
-  Action getPokemon;
-  Action setId;
-  Action setName;
-  Action setImage;
-
-  void _setId(String value) => _id.value = value;
-  void _setName(String value) => _name.value = value;
-  void _setImage(String value) => _image.value = value;
-
-//
-//  Computed isValid;
-//
-//  bool get _isValid => (_id.value > 0 && _id.value < 805);
-
-
-
-  Future<void> _getPokemon() async {
-    final pokemon = await getPokemonUseCase(number: _id.value);
-    print(pokemon);
-  }
-
-
-
 }

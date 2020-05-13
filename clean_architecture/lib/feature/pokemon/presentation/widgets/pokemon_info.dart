@@ -19,7 +19,7 @@ class PokemonInfo extends StatelessWidget {
             fontSize: 32,
           ),
         ),
-//        Image.network(image),
+        Image.network(image),
       ],
     );
   }
